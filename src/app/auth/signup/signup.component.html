@@ -1,5 +1,5 @@
 <section>
-    <form #f="ngForm" (ngSubmit)="onSubmit(f)" fxLayout="column" fxLayoutAlign="center center">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
         <!-- EMAIL -->
         <mat-form-field>
             <input type="email" matInput placeholder="Your email" ngModel name="email" email required
@@ -19,8 +19,9 @@
                 name="birthdate" required>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
+            <mat-error>Enter a valid date!</mat-error>
         </mat-form-field>
         <mat-checkbox ngModel name="agree" required>Agree to Terms and conditions</mat-checkbox>
-        <button mat-raised-button color="primary" type="submit">Submit</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">Submit</button>
     </form>
 </section>
