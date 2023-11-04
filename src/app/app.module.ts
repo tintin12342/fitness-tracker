@@ -13,7 +13,7 @@ import { PastTrainingsComponent } from './training/past-trainings/past-trainings
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AppRoutModule } from './app-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { StopTrainingComponent } from './training/current-training/dialog/stop-training.component';
@@ -30,7 +30,7 @@ import { StopTrainingComponent } from './training/current-training/dialog/stop-t
     WelcomeComponent,
     HeaderComponent,
     SidenavListComponent,
-    StopTrainingComponent
+    StopTrainingComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,10 +38,11 @@ import { StopTrainingComponent } from './training/current-training/dialog/stop-t
     MaterialModule,
     AppRoutModule,
     FlexLayoutModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   entryComponents: [StopTrainingComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
