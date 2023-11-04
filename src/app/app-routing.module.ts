@@ -22,12 +22,12 @@ const routes: Routes = [
   {
     path: 'training',
     component: TrainingComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutModule {}

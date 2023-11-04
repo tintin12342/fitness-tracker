@@ -11,11 +11,14 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class PermissionsService {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ): boolean {
     if (this.authService.isAuth()) {
       return true;
@@ -28,7 +31,7 @@ export class PermissionsService {
 
 export const AuthGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot
+  state: RouterStateSnapshot,
 ): boolean => {
   return inject(PermissionsService).canActivate(route, state);
 };

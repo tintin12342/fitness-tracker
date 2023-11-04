@@ -11,8 +11,15 @@ export class TrainingService {
     { id: 'side-lunges', name: 'Side Lunges', duration: 120, calories: 18 },
     { id: 'burpees', name: 'Burpees', duration: 60, calories: 8 },
   ];
+  private runningExercise: Exercise = {} as Exercise;
 
   getAvaliableExercises() {
-      return this.avaliableExercises.slice();
+    return this.avaliableExercises.slice();
+  }
+
+  startExercise(selectedId: string) {
+    const selectedExercise = this.avaliableExercises.find(
+      (exercise) => exercise.id === selectedId
+    );
   }
 }

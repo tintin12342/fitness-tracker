@@ -25,7 +25,7 @@ export class SidenavListComponent implements OnInit, OnDestroy {
     this.authSubscription = this.authService.authChange.subscribe(
       (authStatus) => {
         this.isAuth = authStatus;
-      }
+      },
     );
   }
 
