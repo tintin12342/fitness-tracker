@@ -17,7 +17,7 @@
                 <a routerLink="/login">Login</a>
             </li>
             <li *ngIf="isAuth">
-                <a routerLink="/login">Logout</a>
+                <a routerLink="/login" (click)="onLogout()">Logout</a>
             </li>
         </ul>
     </div>
