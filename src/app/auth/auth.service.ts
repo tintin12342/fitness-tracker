@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   isAuth() {
-    return this.user != ({} as User);
+    return Object.keys(this.user).length > 0 ? true : false;
   }
 
   private authSuccessfully() {
