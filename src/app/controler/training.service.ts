@@ -52,4 +52,8 @@ export class TrainingService {
     this.runningExercise = {} as Exercise;
     this.exerciseChanged.next({} as Exercise);
   }
+
+  getCompletedOrCancelledExercises() {
+      return this.exercises.slice();
+  }
 }
