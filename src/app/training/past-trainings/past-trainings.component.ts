@@ -20,6 +20,8 @@ export class PastTrainingsComponent implements OnInit, AfterViewInit {
   ];
   dataSource = new MatTableDataSource<Exercise>();
 
+  filterValue: string = '';
+
   constructor(private trainingService: TrainingService) {}
 
   ngOnInit(): void {
@@ -29,5 +31,9 @@ export class PastTrainingsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.sort) this.dataSource.sort = this.sort;
+  }
+
+  doFilter() {
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 }
