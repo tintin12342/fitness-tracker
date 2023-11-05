@@ -15,7 +15,6 @@ export class TrainingService {
   exerciseChanged = new Subject<Exercise>();
   private runningExercise: Exercise = {} as Exercise;
 
-
   getAvaliableExercises() {
     return this.avaliableExercises.slice();
   }
@@ -25,5 +24,9 @@ export class TrainingService {
       (exercise) => exercise.id === selectedId
     ) ?? { id: 'null', name: 'null', duration: 0, calories: 0 };
     this.exerciseChanged.next({ ...this.runningExercise });
+  }
+
+  getRunningExercise() {
+    return { ...this.runningExercise };
   }
 }
