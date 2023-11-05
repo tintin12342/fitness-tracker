@@ -21,9 +21,9 @@ export class TrainingService {
   }
 
   startExercise(selectedId: string) {
-    this.runningExercise = this.avaliableExercises.find(
-      (exercise) => exercise.id === selectedId
-    ) ?? { id: 'null', name: 'null', duration: 0, calories: 0 };
+    this.runningExercise =
+      this.avaliableExercises.find((exercise) => exercise.id === selectedId) ??
+      ({} as Exercise);
     this.exerciseChanged.next({ ...this.runningExercise });
   }
 
