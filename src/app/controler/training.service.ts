@@ -1,23 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Exercise } from '../model/exercise.model';
+import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingService {
-  private avaliableExercises: Exercise[] = [
-    { id: 'crunches', name: 'Crunches', duration: 30, calories: 8 },
-    { id: 'touch-toes', name: 'Touch Toes', duration: 180, calories: 15 },
-    { id: 'side-lunges', name: 'Side Lunges', duration: 120, calories: 18 },
-    { id: 'burpees', name: 'Burpees', duration: 60, calories: 8 },
-  ];
+  private avaliableExercises: Exercise[] = [];
+  exercisesChanged = new Subject<Exercise[]>();
   exerciseChanged = new Subject<Exercise>();
   private runningExercise: Exercise = {} as Exercise;
   private exercises: Exercise[] = [];
 
-  getAvaliableExercises() {
-    return this.avaliableExercises.slice();
+  constructor(private firestore: Firestore) {}
+
+  fetchAvaliableExercises() {
+    onSnapshot(
+      collection(this.firestore, 'avaliableExercises'),
+      (querySnapshot) => {
+        this.avaliableExercises = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          } as Exercise;
+        });
+        this.exercisesChanged.next([...this.avaliableExercises]);
+      }
+    );
   }
 
   startExercise(selectedId: string) {
