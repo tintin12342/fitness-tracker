@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "fitness-tracker-225c3": {
+      "hosting": {
+        "fitness-tracker": [
+          "fitness-tracker-225c3"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "fitness-tracker-225c3"
+  }
+}

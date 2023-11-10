@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { TrainingService } from 'src/app/controler/training.service';
 import { Exercise } from 'src/app/model/exercise.model';
+import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-new-training',
@@ -9,12 +11,26 @@ import { Exercise } from 'src/app/model/exercise.model';
   styleUrls: ['./new-training.component.scss'],
 })
 export class NewTrainingComponent implements OnInit {
+  exercises$: Observable<any> = {} as Observable<any[]>;
   exercises: Exercise[] = [];
 
-  constructor(private trainingService: TrainingService) {}
+  constructor(
+    private trainingService: TrainingService,
+    private firestore: Firestore
+  ) {}
 
   ngOnInit(): void {
-    this.exercises = this.trainingService.getAvaliableExercises();
+    onSnapshot(
+      collection(this.firestore, 'avaliableExercises'),
+      (querySnapshot) => {
+        this.exercises = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          } as Exercise;
+        });
+      }
+    );
   }
 
   onStartTraining(form: NgForm) {
