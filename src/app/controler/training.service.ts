@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Exercise } from '../model/exercise.model';
-import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  onSnapshot,
+  addDoc,
+  doc,
+} from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +48,7 @@ export class TrainingService {
   }
 
   completeExercise() {
-    this.exercises.push({
+    this.addDataToDatabase({
       ...this.runningExercise,
       date: new Date(),
       state: 'completed',
@@ -52,7 +58,7 @@ export class TrainingService {
   }
 
   cancelExercise(progress: number) {
-    this.exercises.push({
+    this.addDataToDatabase({
       ...this.runningExercise,
       duration: this.runningExercise.duration * (progress / 100),
       calories: this.runningExercise.duration * (progress / 100),
@@ -64,6 +70,10 @@ export class TrainingService {
   }
 
   getCompletedOrCancelledExercises() {
-      return this.exercises.slice();
+    return this.exercises.slice();
+  }
+
+  private async addDataToDatabase(exercise: Exercise) {
+    await addDoc(collection(this.firestore, 'finishedExercises'), exercise);
   }
 }
