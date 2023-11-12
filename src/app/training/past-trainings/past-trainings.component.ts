@@ -1,7 +1,14 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 import { TrainingService } from 'src/app/controler/training.service';
 import { Exercise } from 'src/app/model/exercise.model';
 
@@ -10,7 +17,9 @@ import { Exercise } from 'src/app/model/exercise.model';
   templateUrl: './past-trainings.component.html',
   styleUrls: ['./past-trainings.component.scss'],
 })
-export class PastTrainingsComponent implements OnInit, AfterViewInit {
+export class PastTrainingsComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild(MatSort, { static: false }) sort?: MatSort = {} as MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator =
     {} as MatPaginator;
@@ -23,13 +32,20 @@ export class PastTrainingsComponent implements OnInit, AfterViewInit {
   ];
   dataSource = new MatTableDataSource<Exercise>();
 
+  finishedExercisesSubscription: Subscription = {} as Subscription;
+
   filterValue: string = '';
 
   constructor(private trainingService: TrainingService) {}
 
   ngOnInit(): void {
-    this.dataSource.data =
-      this.trainingService.getCompletedOrCancelledExercises();
+    this.finishedExercisesSubscription =
+      this.trainingService.finishedExercisesChanged.subscribe(
+        (exercises: Exercise[]) => {
+          this.dataSource.data = exercises;
+        }
+      );
+    this.trainingService.fetchCompletedOrCancelledExercises();
     this.dataSource.paginator = this.paginator;
   }
 
@@ -39,5 +55,9 @@ export class PastTrainingsComponent implements OnInit, AfterViewInit {
 
   doFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
+  }
+
+  ngOnDestroy() {
+    this.finishedExercisesSubscription.unsubscribe();
   }
 }

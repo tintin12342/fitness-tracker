@@ -6,7 +6,7 @@ import {
   collection,
   onSnapshot,
   addDoc,
-  doc,
+  getDocs,
 } from '@angular/fire/firestore';
 
 @Injectable({
@@ -16,8 +16,8 @@ export class TrainingService {
   private avaliableExercises: Exercise[] = [];
   exercisesChanged = new Subject<Exercise[]>();
   exerciseChanged = new Subject<Exercise>();
+  finishedExercisesChanged = new Subject<Exercise[]>();
   private runningExercise: Exercise = {} as Exercise;
-  private exercises: Exercise[] = [];
 
   constructor(private firestore: Firestore) {}
 
@@ -69,8 +69,9 @@ export class TrainingService {
     this.exerciseChanged.next({} as Exercise);
   }
 
-  getCompletedOrCancelledExercises() {
-    return this.exercises.slice();
+  async fetchCompletedOrCancelledExercises() {
+    const querySnapshot = await getDocs(collection(this.firestore, 'finishedExercises'));
+    this.finishedExercisesChanged.next((querySnapshot.docs.map(doc => doc.data())) as Exercise []);
   }
 
   private async addDataToDatabase(exercise: Exercise) {
